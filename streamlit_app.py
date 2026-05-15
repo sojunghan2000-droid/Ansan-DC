@@ -110,29 +110,39 @@ st.markdown(
       [data-testid="stExpandSidebarButton"]:hover {
         background: #2A5298 !important;
       }
-      /* 사이드바 트리 메뉴 */
-      [data-testid="stSidebar"] [data-testid="stButton"] button {
+      /* 사이드바 트리 메뉴 — 모든 sidebar button (collapse/expand 제외) */
+      section[data-testid="stSidebar"] [data-testid="stButton"] button {
         text-align: left !important;
         justify-content: flex-start !important;
-        padding: 0.32rem 0.7rem 0.32rem 1.0rem !important;
-        font-size: 0.82rem !important;
-        min-height: unset !important;
-        border: 1px solid transparent !important;
-        background: transparent !important;
-        color: #1F2937 !important;
+        padding: 0.34rem 0.7rem 0.34rem 1.0rem !important;
+        font-size: 0.84rem !important;
         font-weight: 500 !important;
+        min-height: unset !important;
+        width: 100% !important;
+        background: white !important;
+        color: #1F2937 !important;
+        border: 1px solid #E5E7EB !important;
+        border-radius: 6px !important;
+        box-shadow: none !important;
       }
-      [data-testid="stSidebar"] [data-testid="stButton"] button:hover {
-        background: rgba(31, 58, 104, 0.08) !important;
+      section[data-testid="stSidebar"] [data-testid="stButton"] button * {
+        color: inherit !important;
+      }
+      section[data-testid="stSidebar"] [data-testid="stButton"] button:hover {
+        background: #EEF2F7 !important;
+        border-color: #2A5298 !important;
         color: #1F3A68 !important;
       }
-      [data-testid="stSidebar"] [data-testid="stButton"] button[kind="primary"] {
+      section[data-testid="stSidebar"] [data-testid="stButton"] button[kind="primary"],
+      section[data-testid="stSidebar"] [data-testid="stButton"] button[data-baseweb="button"][kind="primary"] {
         background: #1F3A68 !important;
         color: white !important;
+        border-color: #1F3A68 !important;
         font-weight: 600 !important;
       }
-      [data-testid="stSidebar"] [data-testid="stButton"] button[kind="primary"]:hover {
+      section[data-testid="stSidebar"] [data-testid="stButton"] button[kind="primary"]:hover {
         background: #2A5298 !important;
+        border-color: #2A5298 !important;
       }
       .nav-group-title {
         font-size: 0.85rem; font-weight: 700; color: #1F3A68;
