@@ -75,8 +75,27 @@ st.markdown(
         font-size: 0.78rem; color: #6B7280; font-weight: 600;
         margin: 0.15rem 0 0.05rem 0; letter-spacing: 0.02em;
       }
-      /* 사이드바 */
-      [data-testid="stSidebar"] { background: #F8FAFC; }
+      /* 사이드바 — Cloud에서 text가 흰색으로 렌더링되는 이슈 회피 */
+      [data-testid="stSidebar"] { background: #F8FAFC !important; }
+      [data-testid="stSidebar"] *,
+      [data-testid="stSidebar"] label,
+      [data-testid="stSidebar"] p,
+      [data-testid="stSidebar"] span,
+      [data-testid="stSidebar"] div {
+        color: #1F2937 !important;
+      }
+      [data-testid="stSidebar"] h1,
+      [data-testid="stSidebar"] h2,
+      [data-testid="stSidebar"] h3,
+      [data-testid="stSidebar"] strong,
+      [data-testid="stSidebar"] b {
+        color: #1F3A68 !important;
+      }
+      [data-testid="stSidebar"] .stRadio label > div:first-child {
+        color: #1F3A68 !important;
+        font-weight: 700 !important;
+        font-size: 0.9rem !important;
+      }
       /* 표 컴팩트 */
       [data-testid="stDataFrame"] { font-size: 0.78rem; }
       /* 도면 placeholder */
