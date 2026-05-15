@@ -3,3 +3,4 @@ pandas>=2.0
 openpyxl>=3.1
 plotly>=5.20
 python-calamine>=0.2  # fast Rust-based xlsx reader (pandas >=2.2 backend)
+streamlit-option-menu>=0.4

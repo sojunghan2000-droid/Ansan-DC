@@ -166,46 +166,66 @@ st.markdown(
 )
 
 
-# ── 사이드바 트리 네비 ───────────────────────────────────────
-NAV_GROUPS = [
-    ("1. RC", [
-        "1.1 RC 생산성",
-    ]),
-    ("2. 철골", [
-        "2.1 철골 Summary",
-        "2.2 철골 설치 생산성",
-        "2.3 철골 배근 생산성",
-    ]),
-    ("3. 토목", [
-        "3.1 Pile Summary",
-        "3.2 Pile 공사진행 현황",
-    ]),
+# ── 사이드바 트리 네비 (streamlit-option-menu) ───────────────
+from streamlit_option_menu import option_menu  # noqa: E402
+
+ALL_PAGES = [
+    "1.1 RC 생산성",
+    "2.1 철골 Summary",
+    "2.2 철골 설치 생산성",
+    "2.3 철골 배근 생산성",
+    "3.1 Pile Summary",
+    "3.2 Pile 공사진행 현황",
 ]
-DEFAULT_PAGE = "2.1 철골 Summary"
-if "page" not in st.session_state:
-    st.session_state.page = DEFAULT_PAGE
+DEFAULT_INDEX = 1  # 2.1 철골 Summary
 
 with st.sidebar:
     st.title("안산 DC")
     st.caption("시공 통합 대시보드")
-    st.divider()
-    for group_title, items in NAV_GROUPS:
-        st.markdown(f'<div class="nav-group-title">{group_title}</div>',
-                    unsafe_allow_html=True)
-        for label in items:
-            is_active = (st.session_state.page == label)
-            if st.button(
-                label,
-                key=f"nav_{label}",
-                use_container_width=True,
-                type="primary" if is_active else "secondary",
-            ):
-                st.session_state.page = label
-                st.rerun()
+
+    # 그룹별 메뉴 (separator로 시각적 분리)
+    page = option_menu(
+        menu_title=None,
+        options=[
+            "1. RC",
+            "1.1 RC 생산성",
+            "2. 철골",
+            "2.1 철골 Summary",
+            "2.2 철골 설치 생산성",
+            "2.3 철골 배근 생산성",
+            "3. 토목",
+            "3.1 Pile Summary",
+            "3.2 Pile 공사진행 현황",
+        ],
+        icons=[
+            "", "bar-chart",
+            "", "building", "tools", "diagram-3",
+            "", "columns-gap", "kanban",
+        ],
+        default_index=3,  # 2.1 철골 Summary
+        styles={
+            "container": {"padding": "0!important", "background-color": "#F8FAFC"},
+            "nav-link": {
+                "font-size": "0.84rem",
+                "text-align": "left",
+                "margin": "0.1rem 0",
+                "padding": "0.34rem 0.7rem 0.34rem 1.2rem",
+                "color": "#1F2937",
+                "border-radius": "6px",
+            },
+            "nav-link-selected": {
+                "background-color": "#1F3A68",
+                "color": "white",
+                "font-weight": "600",
+            },
+        },
+    )
+    # 그룹 헤더는 navigation 대상에서 제외 (선택되면 기본 페이지로)
+    if page not in ALL_PAGES:
+        page = ALL_PAGES[DEFAULT_INDEX]
+
     st.divider()
     st.caption("ℹ️ 사진 박제 데이터. 인원 정보는 PII 보호를 위해 마스킹 처리.")
-
-page = st.session_state.page
 
 
 # ── 공통 헤더 렌더 ────────────────────────────────────────────
