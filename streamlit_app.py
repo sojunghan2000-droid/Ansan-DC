@@ -115,11 +115,11 @@ st.markdown(
 
 # ── 사이드바 네비 ─────────────────────────────────────────────
 with st.sidebar:
-    st.title("🏗️ 안산 DC")
+    st.title("안산 DC")
     st.caption("시공 통합 대시보드")
     st.divider()
     page = st.selectbox(
-        "📊 시트 선택",
+        "시트 선택",
         options=[
             "6.4 철골 SUMMARY",
             "6.1 PRD 종합",
