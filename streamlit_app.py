@@ -40,7 +40,7 @@ st.markdown(
         font-family: 'Pretendard', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
       }
       .block-container {
-        padding-top: 0.6rem !important;
+        padding-top: 0.3rem !important;
         padding-bottom: 0.4rem !important;
         padding-left: 1.0rem !important;
         padding-right: 1.0rem !important;
@@ -92,10 +92,21 @@ st.markdown(
       .floorplan-legend {
         font-size: 0.72rem; color: #475569; margin-top: 0.3rem; text-align: center;
       }
-      /* Hide deploy/menu */
-      [data-testid="stToolbar"] { display: none; }
+      /* 헤더/툴바 유지 — 사이드바 토글 버튼 노출 필수 */
       footer { display: none; }
-      header[data-testid="stHeader"] { background: transparent; height: 0; }
+      header[data-testid="stHeader"] { background: transparent; }
+      /* 사이드바가 닫혔을 때 expand 버튼(>>) 명확히 표시 */
+      [data-testid="stExpandSidebarButton"] {
+        background: #1F3A68 !important;
+        border-radius: 6px !important;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2) !important;
+        z-index: 999 !important;
+      }
+      [data-testid="stExpandSidebarButton"] svg,
+      [data-testid="stExpandSidebarButton"] span { color: white !important; }
+      [data-testid="stExpandSidebarButton"]:hover {
+        background: #2A5298 !important;
+      }
       /* 사진 4·5 표 — 컬러 강조 */
       .perf-card {
         background: #1F3A68; color: white; border-radius: 8px;
@@ -121,14 +132,14 @@ with st.sidebar:
     page = st.selectbox(
         "시트 선택",
         options=[
-            "6.4 철골 SUMMARY",
             "6.1 PRD 종합",
             "6.2 파일 공사진행 현황",
             "6.3 파일 SUMMARY",
+            "6.4 철골 SUMMARY",
             "6.5 철골 설치 생산성",
             "6.6 철근배근 생산성",
         ],
-        index=0,
+        index=3,  # 6.4 철골 SUMMARY를 기본 진입 페이지로 유지
     )
     st.divider()
     st.caption(
