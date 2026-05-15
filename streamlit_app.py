@@ -19,10 +19,13 @@ import streamlit as st
 from lib import DEFAULT_CHK, DEFAULT_GRID, load_dataset
 from lib.kpi import compute_kpis, daily_cumulative
 from lib.std import COLOR_PALETTE
-from lib.mock_data import (
-    PILE_PROGRESS, PILE_SUMMARY, STEEL_SUMMARY,
-    STEEL_PRODUCTIVITY, REBAR_PRODUCTIVITY, RC_PRODUCTIVITY,
-)
+from lib import mock_data as _md
+PILE_PROGRESS = _md.PILE_PROGRESS
+PILE_SUMMARY = _md.PILE_SUMMARY
+STEEL_SUMMARY = _md.STEEL_SUMMARY
+STEEL_PRODUCTIVITY = _md.STEEL_PRODUCTIVITY
+REBAR_PRODUCTIVITY = _md.REBAR_PRODUCTIVITY
+RC_PRODUCTIVITY = _md.RC_PRODUCTIVITY
 
 # ── 페이지 설정 ───────────────────────────────────────────────
 st.set_page_config(
