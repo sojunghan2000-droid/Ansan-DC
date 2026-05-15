@@ -72,17 +72,8 @@ st.markdown(
         font-size: 0.78rem; color: #6B7280; font-weight: 600;
         margin: 0.15rem 0 0.05rem 0; letter-spacing: 0.02em;
       }
-      /* 사이드바 메뉴 */
-      [data-testid="stSidebar"] {
-        background: #F8FAFC;
-      }
-      [data-testid="stSidebar"] .stRadio > label > div p { font-size: 0.88rem; font-weight: 500; }
-      .sidebar-title {
-        background: linear-gradient(135deg, #1F3A68 0%, #2A5298 100%);
-        color: white; padding: 0.7rem 0.9rem; border-radius: 8px;
-        margin-bottom: 0.8rem; font-size: 0.92rem; font-weight: 700;
-      }
-      .sidebar-section { font-size: 0.78rem; color: #6B7280; margin: 0.5rem 0 0.3rem 0.2rem; font-weight: 600; }
+      /* 사이드바 */
+      [data-testid="stSidebar"] { background: #F8FAFC; }
       /* 표 컴팩트 */
       [data-testid="stDataFrame"] { font-size: 0.78rem; }
       /* 도면 placeholder */
@@ -127,7 +118,7 @@ with st.sidebar:
     st.title("🏗️ 안산 DC")
     st.caption("시공 통합 대시보드")
     st.divider()
-    page = st.radio(
+    page = st.selectbox(
         "📊 시트 선택",
         options=[
             "6.4 철골 SUMMARY",
