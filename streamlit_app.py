@@ -21,7 +21,7 @@ from lib.kpi import compute_kpis, daily_cumulative
 from lib.std import COLOR_PALETTE
 from lib.mock_data import (
     PILE_PROGRESS, PILE_SUMMARY, STEEL_SUMMARY,
-    STEEL_PRODUCTIVITY, REBAR_PRODUCTIVITY,
+    STEEL_PRODUCTIVITY, REBAR_PRODUCTIVITY, RC_PRODUCTIVITY,
 )
 
 # ── 페이지 설정 ───────────────────────────────────────────────
@@ -107,6 +107,35 @@ st.markdown(
       [data-testid="stExpandSidebarButton"]:hover {
         background: #2A5298 !important;
       }
+      /* 사이드바 트리 메뉴 */
+      [data-testid="stSidebar"] [data-testid="stButton"] button {
+        text-align: left !important;
+        justify-content: flex-start !important;
+        padding: 0.32rem 0.7rem 0.32rem 1.0rem !important;
+        font-size: 0.82rem !important;
+        min-height: unset !important;
+        border: 1px solid transparent !important;
+        background: transparent !important;
+        color: #1F2937 !important;
+        font-weight: 500 !important;
+      }
+      [data-testid="stSidebar"] [data-testid="stButton"] button:hover {
+        background: rgba(31, 58, 104, 0.08) !important;
+        color: #1F3A68 !important;
+      }
+      [data-testid="stSidebar"] [data-testid="stButton"] button[kind="primary"] {
+        background: #1F3A68 !important;
+        color: white !important;
+        font-weight: 600 !important;
+      }
+      [data-testid="stSidebar"] [data-testid="stButton"] button[kind="primary"]:hover {
+        background: #2A5298 !important;
+      }
+      .nav-group-title {
+        font-size: 0.85rem; font-weight: 700; color: #1F3A68;
+        margin: 0.55rem 0 0.15rem 0; padding-left: 0.2rem;
+        letter-spacing: 0.01em;
+      }
       /* 사진 4·5 표 — 컬러 강조 */
       .perf-card {
         background: #1F3A68; color: white; border-radius: 8px;
@@ -124,28 +153,46 @@ st.markdown(
 )
 
 
-# ── 사이드바 네비 ─────────────────────────────────────────────
+# ── 사이드바 트리 네비 ───────────────────────────────────────
+NAV_GROUPS = [
+    ("1. RC", [
+        "1.1 RC 생산성",
+    ]),
+    ("2. 철골", [
+        "2.1 철골 Summary",
+        "2.2 철골 설치 생산성",
+        "2.3 철골 배근 생산성",
+    ]),
+    ("3. 토목", [
+        "3.1 Pile Summary",
+        "3.2 Pile 공사진행 현황",
+    ]),
+]
+DEFAULT_PAGE = "2.1 철골 Summary"
+if "page" not in st.session_state:
+    st.session_state.page = DEFAULT_PAGE
+
 with st.sidebar:
     st.title("안산 DC")
     st.caption("시공 통합 대시보드")
     st.divider()
-    page = st.selectbox(
-        "시트 선택",
-        options=[
-            "6.1 PRD 종합",
-            "6.2 파일 공사진행 현황",
-            "6.3 파일 SUMMARY",
-            "6.4 철골 SUMMARY",
-            "6.5 철골 설치 생산성",
-            "6.6 철근배근 생산성",
-        ],
-        index=3,  # 6.4 철골 SUMMARY를 기본 진입 페이지로 유지
-    )
+    for group_title, items in NAV_GROUPS:
+        st.markdown(f'<div class="nav-group-title">{group_title}</div>',
+                    unsafe_allow_html=True)
+        for label in items:
+            is_active = (st.session_state.page == label)
+            if st.button(
+                label,
+                key=f"nav_{label}",
+                use_container_width=True,
+                type="primary" if is_active else "secondary",
+            ):
+                st.session_state.page = label
+                st.rerun()
     st.divider()
-    st.caption(
-        "ℹ️ 사진 5장 기준 박제 데이터. "
-        "인원 정보는 PII 보호를 위해 마스킹 처리."
-    )
+    st.caption("ℹ️ 사진 박제 데이터. 인원 정보는 PII 보호를 위해 마스킹 처리.")
+
+page = st.session_state.page
 
 
 # ── 공통 헤더 렌더 ────────────────────────────────────────────
@@ -646,15 +693,35 @@ def render_prd_overview():
 
 
 # ══════════════════════════════════════════════════════════════
-# 라우팅
+# 1.1 RC 생산성 (신규)
+# ══════════════════════════════════════════════════════════════
+def render_rc_productivity():
+    samsung_header("1.1 RC 생산성", subtitle="Zone별 RC 콘크리트 작업 생산성")
+
+    d = RC_PRODUCTIVITY
+    L, R = st.columns([2.3, 1.4])
+
+    with L:
+        _perf_summary_card(d["target"], d["actual"], d["zone_perf"], unit="㎥/인일")
+        _perf_table(d["task_table"])
+
+    with R:
+        st.markdown('<div class="sect-label">📋 인원 출입 기록 (마스킹)</div>',
+                    unsafe_allow_html=True)
+        wdf = pd.DataFrame(d["workers"])
+        st.dataframe(wdf, use_container_width=True, hide_index=True, height=420)
+
+
+# ══════════════════════════════════════════════════════════════
+# 라우팅 (신규 메뉴 구조 1.x / 2.x / 3.x)
 # ══════════════════════════════════════════════════════════════
 RENDER = {
-    "6.4 철골 SUMMARY": render_steel_summary,
-    "6.1 PRD 종합": render_prd_overview,
-    "6.2 파일 공사진행 현황": render_pile_progress,
-    "6.3 파일 SUMMARY": render_pile_summary,
-    "6.5 철골 설치 생산성": render_steel_productivity,
-    "6.6 철근배근 생산성": render_rebar,
+    "1.1 RC 생산성":        render_rc_productivity,
+    "2.1 철골 Summary":     render_prd_overview,       # 기존 6.1 PRD 종합 화면
+    "2.2 철골 설치 생산성":  render_steel_productivity,
+    "2.3 철골 배근 생산성":  render_rebar,
+    "3.1 Pile Summary":     render_pile_summary,
+    "3.2 Pile 공사진행 현황": render_pile_progress,
 }
 
-RENDER.get(page, render_steel_summary)()
+RENDER.get(page, render_prd_overview)()
