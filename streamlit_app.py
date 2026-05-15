@@ -130,10 +130,8 @@ with st.sidebar:
         '시공 통합 대시보드</span></div>',
         unsafe_allow_html=True,
     )
-    st.markdown('<div class="sidebar-section">📊 시트 선택</div>',
-                unsafe_allow_html=True)
     page = st.radio(
-        "page",
+        "📊 시트 선택",
         options=[
             "6.4 철골 SUMMARY",
             "6.1 PRD 종합",
@@ -142,7 +140,6 @@ with st.sidebar:
             "6.5 철골 설치 생산성",
             "6.6 철근배근 생산성",
         ],
-        label_visibility="collapsed",
         index=0,
     )
 
