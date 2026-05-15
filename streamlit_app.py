@@ -217,7 +217,7 @@ if page not in ALL_PAGES:
     page = DEFAULT_PAGE
 
 with st.sidebar:
-    st.title("안산 DC")
+    st.title("안산 글로벌 클라우드센터")
     st.caption("시공 통합 대시보드")
     st.divider()
 
@@ -238,15 +238,14 @@ with st.sidebar:
     st.caption("ℹ️ 사진 박제 데이터. 인원 정보는 PII 보호를 위해 마스킹 처리.")
 
 
-# ── 공통 헤더 렌더 ────────────────────────────────────────────
-def samsung_header(page_tag: str, title: str = "안산 글로벌 클라우드센터", subtitle: str = "Work Front Dashboard"):
+# ── 공통 헤더 렌더 (제목은 사이드바로 이동, 헤더는 SAMSUNG 로고 + 부제 + 태그) ──
+def samsung_header(page_tag: str, subtitle: str = "Work Front Dashboard", **_ignored):
     st.markdown(
         f"""
         <div class="samsung-header">
           <div class="left">
             <span class="brand">SAMSUNG · C&T Corporation</span>
-            <h1>{title}</h1>
-            <span style="opacity:0.75;font-size:0.78rem;">| {subtitle}</span>
+            <span style="opacity:0.85;font-size:0.92rem;font-weight:500;">{subtitle}</span>
           </div>
           <span class="page-tag">{page_tag}</span>
         </div>
