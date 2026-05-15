@@ -141,3 +141,233 @@ table.dash-table {
   color: #9ca3af;
   padding: 0 0.25rem;
 }
+
+/* ── Upload button & modal ─────────────────────────────────── */
+.btn-upload {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.32rem 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.btn-upload:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.badge-uploaded {
+  font-size: 0.7rem;
+  padding: 0.18rem 0.55rem;
+  background: #f5a623;
+  color: white;
+  border-radius: 999px;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}
+
+.btn-reset {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: transparent;
+  color: white;
+  font-family: inherit;
+  font-size: 0.72rem;
+  padding: 0.24rem 0.55rem;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 0.4rem;
+  opacity: 0.85;
+}
+.btn-reset:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 1rem;
+}
+
+.modal-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.2rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+.modal-header h2 {
+  margin: 0;
+  font-size: 1rem;
+  color: #1f3a68;
+  font-weight: 700;
+}
+.modal-close {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: #6b7280;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.2rem 0.45rem;
+  border-radius: 5px;
+}
+.modal-close:hover {
+  background: #f3f4f6;
+  color: #1f2937;
+}
+.modal-close:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.modal-body {
+  padding: 1rem 1.2rem;
+  overflow-y: auto;
+}
+.modal-desc {
+  font-size: 0.82rem;
+  color: #4b5563;
+  margin: 0 0 0.9rem;
+  line-height: 1.5;
+}
+.modal-desc code {
+  background: #f3f4f6;
+  padding: 0.05rem 0.3rem;
+  border-radius: 3px;
+  font-size: 0.78rem;
+}
+
+.upload-row {
+  margin-bottom: 0.85rem;
+}
+.upload-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.82rem;
+  color: #1f2937;
+  font-weight: 600;
+}
+.upload-label em.req {
+  color: #e53935;
+  font-style: normal;
+  font-size: 0.74rem;
+  margin-left: 0.3rem;
+}
+.upload-label em.opt {
+  color: #6b7280;
+  font-style: normal;
+  font-size: 0.74rem;
+  margin-left: 0.3rem;
+}
+.upload-label input[type="file"] {
+  font-size: 0.78rem;
+  font-family: inherit;
+  padding: 0.4rem;
+  background: #f9fafb;
+  border: 1px dashed #cbd5e1;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.upload-label input[type="file"]:hover:not(:disabled) {
+  border-color: #2a5298;
+  background: #eef2f7;
+}
+.upload-meta {
+  font-size: 0.74rem;
+  color: #16a34a;
+  font-weight: 500;
+}
+.upload-hint {
+  font-size: 0.72rem;
+  color: #9ca3af;
+  font-weight: 400;
+}
+.upload-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  font-size: 0.8rem;
+  padding: 0.5rem 0.7rem;
+  border-radius: 6px;
+  margin-top: 0.5rem;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding: 0.8rem 1.2rem;
+  border-top: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+.btn-secondary,
+.btn-primary {
+  appearance: none;
+  border: 0;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.42rem 0.95rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.btn-secondary {
+  background: white;
+  color: #4b5563;
+  border: 1px solid #d1d5db;
+}
+.btn-secondary:hover:not(:disabled) {
+  background: #f3f4f6;
+}
+.btn-primary {
+  background: #1f3a68;
+  color: white;
+}
+.btn-primary:hover:not(:disabled) {
+  background: #2a5298;
+}
+.btn-primary:disabled,
+.btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.toast {
+  position: fixed;
+  bottom: 1.4rem;
+  right: 1.4rem;
+  background: #1f3a68;
+  color: white;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  z-index: 200;
+  max-width: 400px;
+  white-space: pre-line;
+}
