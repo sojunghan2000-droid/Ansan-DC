@@ -155,6 +155,34 @@ st.markdown(
         margin: 0.55rem 0 0.15rem 0; padding-left: 0.2rem;
         letter-spacing: 0.01em;
       }
+      /* HTML 기반 사이드바 네비 트리 */
+      .nav-tree { display: flex; flex-direction: column; gap: 0.05rem; }
+      .nav-tree .nav-group {
+        font-size: 0.92rem; font-weight: 700; color: #1F3A68 !important;
+        margin: 0.6rem 0 0.2rem 0; padding-left: 0.15rem;
+      }
+      .nav-tree .nav-item {
+        display: block;
+        font-size: 0.86rem; font-weight: 500;
+        color: #1F2937 !important;
+        padding: 0.36rem 0.7rem 0.36rem 1.2rem;
+        border-radius: 6px;
+        text-decoration: none !important;
+        border: 1px solid transparent;
+        background: white;
+        margin: 0.12rem 0;
+      }
+      .nav-tree .nav-item:hover {
+        background: #EEF2F7;
+        border-color: #2A5298;
+        color: #1F3A68 !important;
+      }
+      .nav-tree .nav-item.active {
+        background: #1F3A68;
+        color: white !important;
+        font-weight: 600;
+        border-color: #1F3A68;
+      }
       /* 사진 4·5 표 — 컬러 강조 */
       .perf-card {
         background: #1F3A68; color: white; border-radius: 8px;
@@ -172,7 +200,8 @@ st.markdown(
 )
 
 
-# ── 사이드바 트리 네비 (그룹별 radio) ────────────────────────
+# ── 사이드바 네비 (HTML link + query_params) ─────────────────
+# Cloud의 streamlit radio/option-menu가 텍스트를 안 보여 → 순수 HTML로 대체
 GROUPS = {
     "1. RC": ["1.1 RC 생산성"],
     "2. 철골": ["2.1 철골 Summary", "2.2 철골 설치 생산성", "2.3 철골 배근 생산성"],
@@ -181,42 +210,32 @@ GROUPS = {
 ALL_PAGES = [p for items in GROUPS.values() for p in items]
 DEFAULT_PAGE = "2.1 철골 Summary"
 
-if "page" not in st.session_state:
-    st.session_state.page = DEFAULT_PAGE
-
-# 어느 그룹에 현재 페이지가 있는지 찾고, 다른 그룹은 None index로
-def _group_of(p):
-    for g, items in GROUPS.items():
-        if p in items:
-            return g
-    return "2. 철골"
-
-current_group = _group_of(st.session_state.page)
+# 현재 페이지: URL query_params 우선, 없으면 기본값
+qp = st.query_params
+page = qp.get("p", DEFAULT_PAGE)
+if page not in ALL_PAGES:
+    page = DEFAULT_PAGE
 
 with st.sidebar:
     st.title("안산 DC")
     st.caption("시공 통합 대시보드")
     st.divider()
 
-    # 그룹별 radio — 각 그룹은 독립이지만 클릭 시 page state 업데이트
+    nav_html = ['<div class="nav-tree">']
     for group_name, items in GROUPS.items():
-        is_current_group = (group_name == current_group)
-        default_idx = items.index(st.session_state.page) if is_current_group else None
-        picked = st.radio(
-            group_name,
-            options=items,
-            index=default_idx,
-            key=f"radio_{group_name}",
-        )
-        # 사용자가 이 그룹에서 새로 선택했고 그게 현재 페이지와 다르면 갱신
-        if picked and picked != st.session_state.page:
-            st.session_state.page = picked
-            st.rerun()
+        nav_html.append(f'<div class="nav-group">{group_name}</div>')
+        for label in items:
+            from urllib.parse import quote
+            is_active = (label == page)
+            cls = "nav-item active" if is_active else "nav-item"
+            nav_html.append(
+                f'<a class="{cls}" href="?p={quote(label)}" target="_self">{label}</a>'
+            )
+    nav_html.append("</div>")
+    st.markdown("\n".join(nav_html), unsafe_allow_html=True)
 
     st.divider()
     st.caption("ℹ️ 사진 박제 데이터. 인원 정보는 PII 보호를 위해 마스킹 처리.")
-
-page = st.session_state.page
 
 
 # ── 공통 헤더 렌더 ────────────────────────────────────────────
