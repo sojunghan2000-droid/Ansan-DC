@@ -166,66 +166,51 @@ st.markdown(
 )
 
 
-# ── 사이드바 트리 네비 (streamlit-option-menu) ───────────────
-from streamlit_option_menu import option_menu  # noqa: E402
+# ── 사이드바 트리 네비 (그룹별 radio) ────────────────────────
+GROUPS = {
+    "1. RC": ["1.1 RC 생산성"],
+    "2. 철골": ["2.1 철골 Summary", "2.2 철골 설치 생산성", "2.3 철골 배근 생산성"],
+    "3. 토목": ["3.1 Pile Summary", "3.2 Pile 공사진행 현황"],
+}
+ALL_PAGES = [p for items in GROUPS.values() for p in items]
+DEFAULT_PAGE = "2.1 철골 Summary"
 
-ALL_PAGES = [
-    "1.1 RC 생산성",
-    "2.1 철골 Summary",
-    "2.2 철골 설치 생산성",
-    "2.3 철골 배근 생산성",
-    "3.1 Pile Summary",
-    "3.2 Pile 공사진행 현황",
-]
-DEFAULT_INDEX = 1  # 2.1 철골 Summary
+if "page" not in st.session_state:
+    st.session_state.page = DEFAULT_PAGE
+
+# 어느 그룹에 현재 페이지가 있는지 찾고, 다른 그룹은 None index로
+def _group_of(p):
+    for g, items in GROUPS.items():
+        if p in items:
+            return g
+    return "2. 철골"
+
+current_group = _group_of(st.session_state.page)
 
 with st.sidebar:
     st.title("안산 DC")
     st.caption("시공 통합 대시보드")
+    st.divider()
 
-    # 그룹별 메뉴 (separator로 시각적 분리)
-    page = option_menu(
-        menu_title=None,
-        options=[
-            "1. RC",
-            "1.1 RC 생산성",
-            "2. 철골",
-            "2.1 철골 Summary",
-            "2.2 철골 설치 생산성",
-            "2.3 철골 배근 생산성",
-            "3. 토목",
-            "3.1 Pile Summary",
-            "3.2 Pile 공사진행 현황",
-        ],
-        icons=[
-            "", "bar-chart",
-            "", "building", "tools", "diagram-3",
-            "", "columns-gap", "kanban",
-        ],
-        default_index=3,  # 2.1 철골 Summary
-        styles={
-            "container": {"padding": "0!important", "background-color": "#F8FAFC"},
-            "nav-link": {
-                "font-size": "0.84rem",
-                "text-align": "left",
-                "margin": "0.1rem 0",
-                "padding": "0.34rem 0.7rem 0.34rem 1.2rem",
-                "color": "#1F2937",
-                "border-radius": "6px",
-            },
-            "nav-link-selected": {
-                "background-color": "#1F3A68",
-                "color": "white",
-                "font-weight": "600",
-            },
-        },
-    )
-    # 그룹 헤더는 navigation 대상에서 제외 (선택되면 기본 페이지로)
-    if page not in ALL_PAGES:
-        page = ALL_PAGES[DEFAULT_INDEX]
+    # 그룹별 radio — 각 그룹은 독립이지만 클릭 시 page state 업데이트
+    for group_name, items in GROUPS.items():
+        is_current_group = (group_name == current_group)
+        default_idx = items.index(st.session_state.page) if is_current_group else None
+        picked = st.radio(
+            group_name,
+            options=items,
+            index=default_idx,
+            key=f"radio_{group_name}",
+        )
+        # 사용자가 이 그룹에서 새로 선택했고 그게 현재 페이지와 다르면 갱신
+        if picked and picked != st.session_state.page:
+            st.session_state.page = picked
+            st.rerun()
 
     st.divider()
     st.caption("ℹ️ 사진 박제 데이터. 인원 정보는 PII 보호를 위해 마스킹 처리.")
+
+page = st.session_state.page
 
 
 # ── 공통 헤더 렌더 ────────────────────────────────────────────
