@@ -124,12 +124,9 @@ st.markdown(
 
 # ── 사이드바 네비 ─────────────────────────────────────────────
 with st.sidebar:
-    st.markdown(
-        '<div class="sidebar-title">🏗️ 안산 글로벌 클라우드센터<br/>'
-        '<span style="font-size:0.74rem;font-weight:500;opacity:0.85;">'
-        '시공 통합 대시보드</span></div>',
-        unsafe_allow_html=True,
-    )
+    st.title("🏗️ 안산 DC")
+    st.caption("시공 통합 대시보드")
+    st.divider()
     page = st.radio(
         "📊 시트 선택",
         options=[
@@ -142,11 +139,10 @@ with st.sidebar:
         ],
         index=0,
     )
-
-    st.markdown('<div class="sidebar-section">ℹ️ 정보</div>', unsafe_allow_html=True)
+    st.divider()
     st.caption(
-        "데이터는 첨부 사진 5장 기준 박제값입니다. "
-        "UI 확인 용도로 인원 정보는 마스킹 처리했습니다."
+        "ℹ️ 사진 5장 기준 박제 데이터. "
+        "인원 정보는 PII 보호를 위해 마스킹 처리."
     )
 
 
