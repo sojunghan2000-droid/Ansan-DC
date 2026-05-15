@@ -203,8 +203,8 @@ st.markdown(
 # ── 사이드바 네비 (HTML link + query_params) ─────────────────
 # Cloud의 streamlit radio/option-menu가 텍스트를 안 보여 → 순수 HTML로 대체
 GROUPS = {
-    "1. RC": ["1.1 RC 생산성"],
-    "2. 철골": ["2.1 철골 Summary", "2.2 철골 설치 생산성", "2.3 철골 배근 생산성"],
+    "1. RC": ["1.1 RC 생산성", "1.2 철골 배근 생산성"],
+    "2. 철골": ["2.1 철골 Summary", "2.2 철골 설치 생산성"],
     "3. 토목": ["3.1 Pile Summary", "3.2 Pile 공사진행 현황"],
 }
 ALL_PAGES = [p for items in GROUPS.values() for p in items]
@@ -759,9 +759,9 @@ def render_rc_productivity():
 # ══════════════════════════════════════════════════════════════
 RENDER = {
     "1.1 RC 생산성":        render_rc_productivity,
+    "1.2 철골 배근 생산성":  render_rebar,
     "2.1 철골 Summary":     render_prd_overview,       # 기존 6.1 PRD 종합 화면
     "2.2 철골 설치 생산성":  render_steel_productivity,
-    "2.3 철골 배근 생산성":  render_rebar,
     "3.1 Pile Summary":     render_pile_summary,
     "3.2 Pile 공사진행 현황": render_pile_progress,
 }
